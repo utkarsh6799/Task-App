@@ -56,7 +56,14 @@ if(!isValidOpearation){
 
 
 try{
-   const task = await Tasks.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators:true })
+    const task = await Tasks.findById(req.params.id)
+
+    updates.forEach((update) => {
+        task[update] = req.body[update]
+    })
+
+    await task.save()
+
    if(!task){
        return res.status(404).send()
    }
