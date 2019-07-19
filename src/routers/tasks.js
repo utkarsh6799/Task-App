@@ -7,8 +7,9 @@ const router = new express.Router()
 router.get('/tasks', auth, async (req, res) => {
         
     try {
-        const tasks = await Tasks.find({ owner: req.user._id })
-        res.status(201).send(tasks)
+        
+        await req.user.populate('tasks').execPopulate()
+        res.status(201).send(req.user.tasks)
     }catch (e){
          res.status(500).send()
     }
