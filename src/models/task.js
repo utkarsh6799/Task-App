@@ -3,15 +3,22 @@ const validator = require('validator')
 
 
 const Tasks = mongoose.model('Tasks', {
-    name: {
+    description: {
         type: String,
         required: true,
         trim: true
     },
-    description: {
+    completed: {
         type: Boolean,
         default: false
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+
     }
 })
+
 
 module.exports = Tasks
