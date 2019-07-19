@@ -3,12 +3,20 @@ const Tasks = require('../models/task')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
-
+// GET /tasks?completed=false
 router.get('/tasks', auth, async (req, res) => {
+    const match = {}
+
+    if (req.query.completed){
+        match.completed = req.query.completed === 'true'
+    }
         
     try {
         
-        await req.user.populate('tasks').execPopulate()
+        await req.user.populate({
+            path: 'tasks',
+            match
+        }).execPopulate()
         res.status(201).send(req.user.tasks)
     }catch (e){
          res.status(500).send()
